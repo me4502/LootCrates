@@ -84,13 +84,11 @@ public class LootCrates {
     public void onClick(InteractBlockEvent.Secondary event, @First Player player) {
         event.getTargetBlock().getLocation().map(this::getCrateForLocation).ifPresent((crate -> player.getItemInHand().ifPresent((itemStack -> itemStack.get(Keys.DISPLAY_NAME).ifPresent((name -> {
             if (name.toPlain().contains(crate.getKeyName())) {
-                String command = crate.getLootCommands().get(ThreadLocalRandom.current().nextInt(crate.getLootCommands().size()));
-                Sponge.getGame().getCommandManager().process(Sponge.getGame().getServer().getConsole(), command.replace("@p", player.getName()));
-                if (itemStack.getQuantity() > 1) {
-                    itemStack.setQuantity(itemStack.getQuantity() - 1);
-                } else {
-                    player.setItemInHand(null);
+                for (int i = 0; i < itemStack.getQuantity(); i++) {
+                    String command = crate.getLootCommands().get(ThreadLocalRandom.current().nextInt(crate.getLootCommands().size()));
+                    Sponge.getGame().getCommandManager().process(Sponge.getGame().getServer().getConsole(), command.replace("@p", player.getName()));
                 }
+                player.setItemInHand(null);
                 event.setCancelled(true);
             }
         }))))));
