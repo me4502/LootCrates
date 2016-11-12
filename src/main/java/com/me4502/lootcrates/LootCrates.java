@@ -10,6 +10,7 @@ import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.data.key.Keys;
+import org.spongepowered.api.data.type.HandTypes;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.block.InteractBlockEvent;
@@ -81,14 +82,14 @@ public class LootCrates {
     }
 
     @Listener
-    public void onClick(InteractBlockEvent.Secondary event, @First Player player) {
-        event.getTargetBlock().getLocation().map(this::getCrateForLocation).ifPresent((crate -> player.getItemInHand().ifPresent((itemStack -> itemStack.get(Keys.DISPLAY_NAME).ifPresent((name -> {
+    public void onClick(InteractBlockEvent.Secondary.MainHand event, @First Player player) {
+        event.getTargetBlock().getLocation().map(this::getCrateForLocation).ifPresent((crate -> player.getItemInHand(HandTypes.MAIN_HAND).ifPresent((itemStack -> itemStack.get(Keys.DISPLAY_NAME).ifPresent((name -> {
             if (name.toPlain().contains(crate.getKeyName())) {
                 for (int i = 0; i < itemStack.getQuantity(); i++) {
                     String command = crate.getLootCommands().get(ThreadLocalRandom.current().nextInt(crate.getLootCommands().size()));
                     Sponge.getGame().getCommandManager().process(Sponge.getGame().getServer().getConsole(), command.replace("@p", player.getName()));
                 }
-                player.setItemInHand(null);
+                player.setItemInHand(HandTypes.MAIN_HAND, null);
                 event.setCancelled(true);
             }
         }))))));
