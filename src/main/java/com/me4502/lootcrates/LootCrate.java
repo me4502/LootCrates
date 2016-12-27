@@ -1,5 +1,6 @@
 package com.me4502.lootcrates;
 
+import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
@@ -12,15 +13,13 @@ public class LootCrate {
     private Location<World> crateLocation;
     private List<String> lootCommands;
 
-    private String keyCommand;
-    private String keyName;
+    private ItemStack keyItem;
 
-    public LootCrate(String name, List<String> lootCommands, Location<World> crateLocation, String keyCommand, String keyName) {
+    public LootCrate(String name, List<String> lootCommands, Location<World> crateLocation, ItemStack keyItem) {
         this.name = name;
         this.lootCommands = lootCommands;
         this.crateLocation = crateLocation;
-        this.keyCommand = keyCommand;
-        this.keyName = keyName;
+        this.keyItem = keyItem;
     }
 
     public String getName() {
@@ -35,11 +34,11 @@ public class LootCrate {
         return this.crateLocation;
     }
 
-    public String getKeyCommand() {
-        return this.keyCommand;
+    public ItemStack getKeyItem() {
+        return this.keyItem;
     }
 
-    public String getKeyName() {
-        return this.keyName;
+    public void setKeyItem(ItemStack keyItem) {
+        this.keyItem = keyItem;
     }
 }
