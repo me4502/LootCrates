@@ -75,7 +75,8 @@ public class LootCrates {
                 .executor(new GiveKeyCommand())
                 .arguments(
                         GenericArguments.choices(Text.of("crate"), () -> crates.stream().map(LootCrate::getName).collect(Collectors.toList()), s -> crates.stream().filter(crate -> crate.getName().equals(s)).findFirst().orElse(null)),
-                        GenericArguments.optional(GenericArguments.player(Text.of("player")))
+                        GenericArguments.optional(GenericArguments.player(Text.of("player"))),
+                        GenericArguments.optional(GenericArguments.integer(Text.of("amount")))
                 ).build();
 
         Sponge.getCommandManager().register(this, giveKeyCommand, "givekey");
